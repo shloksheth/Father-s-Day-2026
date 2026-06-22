@@ -91,31 +91,27 @@ export const SlidingPuzzle = () => {
         Put it together, Dad.
       </motion.h2>
 
-      <div className="relative w-72 h-72 md:w-96 md:h-96 bg-gray-50 border-4 border-gray-100 shadow-xl p-1">
+      <div className="relative w-72 h-72 md:w-96 md:h-96 bg-gray-50 border-4 border-gray-100 shadow-xl p-0.5">
         {tiles.map((tile) => (
           <motion.div
             key={tile.id}
             layout
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             onClick={() => handleTileClick(tile)}
-            className="absolute w-[32%] h-[32%] bg-accent flex items-center justify-center cursor-pointer overflow-hidden border border-white/20"
+            className="absolute w-[33.333%] h-[33.333%] cursor-pointer p-0.5"
             style={{
-              left: `${(tile.currentPos % 3) * 33.33}%`,
-              top: `${Math.floor(tile.currentPos / 3) * 33.33}%`,
+              left: `${(tile.currentPos % 3) * 33.333}%`,
+              top: `${Math.floor(tile.currentPos / 3) * 33.333}%`,
             }}
           >
             <div 
-              className="absolute inset-0 bg-cover bg-center"
+              className="w-full h-full rounded-sm"
               style={{ 
                 backgroundImage: 'url(/images/puzzle.jpg)',
                 backgroundSize: '300% 300%',
                 backgroundPosition: `${(tile.correctPos % 3) * 50}% ${Math.floor(tile.correctPos / 3) * 50}%`
               }}
             />
-            {/* Fallback if no image */}
-            <div className="absolute inset-0 bg-accent/20 flex items-center justify-center -z-10">
-               <span className="text-white/20 font-bold text-4xl">{tile.id + 1}</span>
-            </div>
           </motion.div>
         ))}
         {isSolved && (
