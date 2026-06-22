@@ -91,7 +91,8 @@ export const SlidingPuzzle = () => {
         Put it together, Dad.
       </motion.h2>
 
-      <div className="relative w-72 h-72 md:w-96 md:h-96 bg-gray-50 border-4 border-gray-100 shadow-xl p-0.5">
+      {/* Main Puzzle Container */}
+      <div className="relative w-72 h-72 md:w-96 md:h-96 bg-gray-100 border-4 border-gray-950 shadow-xl p-0.5 overflow-hidden rounded-md">
         {tiles.map((tile) => (
           <motion.div
             key={tile.id}
@@ -104,22 +105,25 @@ export const SlidingPuzzle = () => {
               top: `${Math.floor(tile.currentPos / 3) * 33.333}%`,
             }}
           >
+            {/* Swapped path from .jpg to .jpeg below */}
             <div 
-              className="w-full h-full rounded-sm"
+              className="w-full h-full rounded-sm bg-gray-200 border border-gray-300/40 shadow-sm"
               style={{ 
-                backgroundImage: 'url(/images/puzzle.jpg)',
+                backgroundImage: 'url(/images/puzzle.jpeg)',
                 backgroundSize: '300% 300%',
                 backgroundPosition: `${(tile.correctPos % 3) * 50}% ${Math.floor(tile.correctPos / 3) * 50}%`
               }}
             />
           </motion.div>
         ))}
+        
+        {/* Swapped path from .jpg to .jpeg on completion screen overlay below */}
         {isSolved && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="absolute inset-0 bg-cover bg-center z-10"
-            style={{ backgroundImage: 'url(/images/puzzle.jpg)' }}
+            style={{ backgroundImage: 'url(/images/puzzle.jpeg)' }}
           />
         )}
       </div>
@@ -133,35 +137,3 @@ export const SlidingPuzzle = () => {
               animate={{ scale: 1, opacity: 1 }}
               className="flex items-center gap-2 text-green-600 font-medium"
             >
-              <CheckCircle2 className="w-6 h-6" />
-              <span>Not bad.</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <AnimatePresence>
-        {showTrash && (
-          <motion.div
-            className="absolute cursor-pointer z-20"
-            initial={{ top: -100, left: '70%', rotate: 0 }}
-            animate={{ 
-              top: '110%', 
-              rotate: 360,
-              left: ['70%', '75%', '65%', '70%']
-            }}
-            transition={{ duration: 12, ease: "linear" }}
-            onAnimationComplete={() => setShowTrash(false)}
-          >
-            <div className="relative group">
-              <span className="text-4xl">🗑️</span>
-              <span className="absolute right-full mr-2 px-2 py-1 bg-black text-white text-[10px] rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
-                Oh. Same as India.
-              </span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
-  );
-};
