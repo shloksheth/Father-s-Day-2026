@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { useGameState } from '@/hooks/useGameState';
 
 interface Tile {
@@ -20,13 +19,13 @@ export const SlidingPuzzle = () => {
   const [showTrash, setShowTrash] = useState(false);
 
   const initPuzzle = useCallback(() => {
-    let initialTiles: Tile[] = Array.from({ length: 8 }, (_, i) => ({
+    const initialTiles: Tile[] = Array.from({ length: 8 }, (_, i) => ({
       id: i,
       currentPos: i,
       correctPos: i,
     }));
     
-    let positions = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    const positions = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     let emptyPos = 8;
     
     for (let i = 0; i < 100; i++) {
@@ -65,9 +64,11 @@ export const SlidingPuzzle = () => {
 
   const handleTileClick = (clickedTile: Tile) => {
     if (isSolved) return;
+    
     const emptyPos = [0, 1, 2, 3, 4, 5, 6, 7, 8].find(
       pos => !tiles.some(tile => tile.currentPos === pos)
-    )!;
+    ) ?? 8;
+
     if (getNeighbors(clickedTile.currentPos).includes(emptyPos)) {
       const newTiles = tiles.map(tile => 
         tile.id === clickedTile.id ? { ...tile, currentPos: emptyPos } : tile
@@ -91,7 +92,7 @@ export const SlidingPuzzle = () => {
         Put it together, Dad.
       </motion.h2>
 
-      {/* Main Puzzle Container */}
+      {/* Main Puzzle Grid Container */}
       <div className="relative w-72 h-72 md:w-96 md:h-96 bg-gray-100 border-4 border-gray-950 shadow-xl p-0.5 overflow-hidden rounded-md">
         {tiles.map((tile) => (
           <motion.div
@@ -105,7 +106,6 @@ export const SlidingPuzzle = () => {
               top: `${Math.floor(tile.currentPos / 3) * 33.333}%`,
             }}
           >
-            {/* Swapped path from .jpg to .jpeg below */}
             <div 
               className="w-full h-full rounded-sm bg-gray-200 border border-gray-300/40 shadow-sm"
               style={{ 
@@ -117,7 +117,7 @@ export const SlidingPuzzle = () => {
           </motion.div>
         ))}
         
-        {/* Swapped path from .jpg to .jpeg on completion screen overlay below */}
+        {/* Full Image Completion Overlay */}
         {isSolved && (
           <motion.div 
             initial={{ opacity: 0 }}
@@ -137,3 +137,35 @@ export const SlidingPuzzle = () => {
               animate={{ scale: 1, opacity: 1 }}
               className="flex items-center gap-2 text-green-600 font-medium"
             >
+              <CheckCircle2 className="w-6 h-6" />
+              <span>Not bad.</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <AnimatePresence>
+        {showTrash && (
+          <motion.div
+            className="absolute cursor-pointer z-20"
+            initial={{ top: -100, left: '70%', rotate: 0 }}
+            animate={{ 
+              top: '110%', 
+              rotate: 360,
+              left: ['70%', '75%', '65%', '70%']
+            }}
+            transition={{ duration: 12, ease: "linear" }}
+            onAnimationComplete={() => setShowTrash(false)}
+          >
+            <div className="relative group">
+              <span className="text-4xl">🗑️</span>
+              <span className="absolute right-full mr-2 px-2 py-1 bg-black text-white text-[10px] rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
+                Oh. Same as India.
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+};
