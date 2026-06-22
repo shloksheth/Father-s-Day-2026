@@ -1,72 +1,24 @@
-'use client';
+# How to Add Your Own Photos
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+To replace the placeholder images with your own photos, follow these steps:
 
-type Section = 'intro' | 'puzzle' | 'memory' | 'wordsearch' | 'arcade' | 'button' | 'gallery';
+### 1. The Puzzle Image
+- **File Location**: `public/images/puzzle.jpg`
+- **Recommended Size**: Square (e.g., 800x800px)
+- **What to do**: Replace the file at that path. The code is already set up to look for it.
 
-interface GameStateContextType {
-  unlockedSections: Set<Section>;
-  unlockSection: (section: Section) => void;
-  currentSection: Section;
-  setCurrentSection: (section: Section) => void;
-  skipToSection: (section: Section) => void;
-}
+### 2. The Photo Gallery
+- **File Location**: `public/images/gallery/photo1.jpg`, `photo2.jpg`, ..., `photo10.jpg`
+- **What to do**: Place up to 10 images in the `public/images/gallery/` folder named exactly as above.
 
-const GameStateContext = createContext<GameStateContextType | undefined>(undefined);
+---
 
-export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [unlockedSections, setUnlockedSections] = useState<Set<Section>>(new Set(['intro']));
-  const [currentSection, setCurrentSection] = useState<Section>('intro');
+## Code Reference for Developers
+If you want to change where the code looks for images, here are the files to edit:
 
-  const unlockSection = (section: Section) => {
-    setUnlockedSections((prev) => {
-      const next = new Set(prev);
-      next.add(section);
-      return next;
-    });
-    
-    // Auto-scroll to the newly unlocked section
-    setTimeout(() => {
-      const element = document.getElementById(section);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        setCurrentSection(section);
-      }
-    }, 500);
-  };
-
-  const skipToSection = (section: Section) => {
-    setUnlockedSections((prev) => {
-      const next = new Set(prev);
-      // Logic to unlock everything up to this section
-      const sections: Section[] = ['intro', 'puzzle', 'memory', 'wordsearch', 'arcade', 'button', 'gallery'];
-      const index = sections.indexOf(section);
-      for (let i = 0; i <= index; i++) {
-        next.add(sections[i]);
-      }
-      return next;
-    });
-    
-    setTimeout(() => {
-      const element = document.getElementById(section);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        setCurrentSection(section);
-      }
-    }, 100);
-  };
-
-  return (
-    <GameStateContext.Provider value={{ unlockedSections, unlockSection, currentSection, setCurrentSection, skipToSection }}>
-      {children}
-    </GameStateContext.Provider>
-  );
-};
-
-export const useGameState = () => {
-  const context = useContext(GameStateContext);
-  if (context === undefined) {
-    throw new Error('useGameState must be used within a GameStateProvider');
-  }
-  return context;
-};
+- **Puzzle**: `src/components/games/SlidingPuzzle.tsx`
+  - Change the `backgroundImage: 'url(...)'` lines (around lines 112 and 123).
+- **Gallery**: `src/components/gallery/PhotoGallery.tsx`
+  - Change the `<img src={...} />` line (around line 30).
+- **Trivia (Secret Button)**: `src/components/arcade/TriviaShowdown.tsx`
+  - The hidden button is in the top-left corner of the trivia section.

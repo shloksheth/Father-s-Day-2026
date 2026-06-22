@@ -1,0 +1,21 @@
+
+> web-app@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 567ms
+
+○ Compiling / ...
+ GET / 200 in 8.4s (next.js: 7.9s, application-code: 492ms)
+[browser] 'lab(8.11897 0.811279 -12.254)' is not an animatable color. Use the equivalent color code instead.. For more information and steps for solving, visit https://motion.dev/troubleshooting/color-not-animatable (<anonymous>)
+ GET /images/puzzle.jpg 404 in 555ms (next.js: 495ms, application-code: 60ms)
+ GET / 200 in 72ms (next.js: 5ms, application-code: 66ms)
+ GET / 200 in 83ms (next.js: 8ms, application-code: 75ms)
+ GET / 200 in 66ms (next.js: 6ms, application-code: 60ms)
+ GET / 200 in 58ms (next.js: 6ms, application-code: 52ms)
+ GET / 200 in 116ms (next.js: 9ms, application-code: 107ms)
+ GET / 200 in 59ms (next.js: 5ms, application-code: 54ms)
+ GET / 200 in 70ms (next.js: 6ms, application-code: 64ms)
+ GET / 200 in 62ms (next.js: 7ms, application-code: 55ms)
